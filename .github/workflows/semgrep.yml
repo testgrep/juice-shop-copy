@@ -21,6 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - run: semgrep ci --json -o semgrep-findings.json
+      continue-on-error: true
     - run: python /transform/semgrep-json-to-sarif.py --json ./semgrep-findings.json --sarif ./semgrep-sarif.json
     - name: Archive code coverage results
       uses: actions/upload-artifact@v4
