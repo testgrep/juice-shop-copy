@@ -20,6 +20,12 @@ jobs:
         image: ghcr.io/testgrep/cse-findings-sarif/semgrep-with-sarif-transform:latest
     steps:
     - uses: actions/checkout@v4
+    - name: login to ghcr.io
+      uses: docker/login-action@v2
+      with: 
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     - run: semgrep ci --json -o semgrep-findings.json
     - run: python /transform/semgrep-json-to-sarif.py --json ./semgrep-findings.json --sarif ./semgrep-sarif.json
     - name: Archive code coverage results
